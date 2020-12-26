@@ -1,0 +1,611 @@
+openapi: 3.0.0
+info:
+  title: Multiple Allele Code Service
+  version: '1.5'
+servers:
+  - url: 'https://hml.nmdp.org/mac/api/'
+paths:
+  /codes:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: Can not resolve ./ex-allele-codes.txt
+                type: string
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: GET_codes
+      parameters:
+        - name: after
+          in: query
+          required: true
+          description: |
+            Only return code definitions with a code greater.
+            If "AAA" is specified,  will not include itself or shorter codes like "ZZ".
+          schema:
+            type: string
+        - name: before
+          in: query
+          required: true
+          description: Only return code definitions with a code smaller.
+          schema:
+            type: string
+  '/codes/{code}':
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      description: Retrieve the multiple allele code definition for the specified code
+      operationId: GET_codes-code
+    parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The specific multiple allele code
+  /encode:
+    post:
+      responses:
+        '200':
+          description: ''
+          headers:
+            x-warning:
+              description: information that should be logged or shown to user
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                example: 'HLA-A*01:AB'
+                type: string
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: 'Invalid allele: HLA-B*01:01'
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: POST_encode
+      requestBody:
+        content:
+          text/plain:
+            example: 'HLA-A*01:01/HLA-A*01:02'
+            schema:
+              type: string
+        required: true
+      parameters:
+        - name: trialRun
+          in: query
+          required: true
+          description: Simulate an encode without actually persisting.
+          schema:
+            type: boolean
+        - name: imgtHlaRelease
+          in: query
+          required: true
+          description: |
+            Optionally specify the IMGT/HLA Release like "3.19.0" (default is the latest release)
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          description: |
+            Specify an email identifying the requester.
+            Without this no new allele code will be created
+          schema:
+            type: string
+  /decode:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: 'HLA-A*01:01/HLA-A*01:02'
+                type: string
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: 'Invalid allele code: ONE'
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: GET_decode
+      parameters:
+        - name: imgtHlaRelease
+          in: query
+          required: true
+          description: |
+            Optionally specify the IMGT/HLA Release like "3.19.0" (default is the latest release)
+          schema:
+            type: string
+        - name: typing
+          in: query
+          required: true
+          description: 'An allele code designation in the format locus*firstField:alleleCode'
+          schema:
+            type: string
+        - name: expand
+          in: query
+          required: true
+          description: flag indicating whether to expand short allele names into their sets of full IMGT/HLA names.
+          schema:
+            default: false
+            type: boolean
+  /decodeList:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example:
+                  - typing: 'HLA-A*01:AB'
+                    alleleString: 'HLA-A*01:01/HLA-A*01:02'
+                    httpStatus: 200
+                    errorMsg: 'null'
+                  - typing: 'HLA-DRB1*15:ML'
+                    alleleString: 'HLA-DRB1*15:01/HLA-DRB1*15:13/HLA-DRB1*15:16/HLA-DRB1*15:18'
+                    httpStatus: 200
+                    errorMsg: 'null'
+                  - typing: 'HLA-A*99:BOGUS'
+                    alleleString: 'null'
+                    httpStatus: 400
+                    errorMsg: Could not decode typing
+                type: array
+                items:
+                  $ref: '#/components/schemas/DecodedTyping'
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: POST_decodeList
+      requestBody:
+        content:
+          application/json:
+            example:
+              - 'HLA-A*01:AB'
+              - 'HLA-DRB1*15:ML'
+              - 'HLA-A*99:BOGUS'
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      parameters:
+        - name: imgtHlaRelease
+          in: query
+          required: true
+          description: |
+            Optionally specify the IMGT/HLA Release like "3.19.0" (default is the latest release)
+          schema:
+            type: string
+  /imgtHlaReleases:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: 3.20.0 2015-04
+                type: string
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: GET_imgtHlaReleases
+  /validate:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResult'
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: GET_validate
+      parameters:
+        - name: imgtHlaRelease
+          in: query
+          required: true
+          description: Optionall specify the IMGT/HLA Release version. The default is the latest release.
+          schema:
+            type: string
+        - name: typing
+          in: query
+          required: true
+          description: 'An allele code designation in the format locus*family:alleleCode'
+          schema:
+            type: string
+  /validateList:
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example:
+                  - typing: 'A*01:AB'
+                    httpStatus: 200
+                    errorMsg: 'null'
+                    validationResult:
+                      valid: true
+                      historicallyValid: true
+                      description: The MACD is valid
+                      conditions: [ ]
+                  - typing: 'C*01:AB'
+                    httpStatus: 200
+                    errorMsg: 'null'
+                    validationResult:
+                      valid: false
+                      historicallyValid: true
+                      description: 'The MACD contains a RENAMED allele: [C*01:01]'
+                      conditions:
+                        - code: RENAMED
+                          imgtHlaRelease: 3.35.0
+                          itemValue: 'C*01:01'
+                  - typing: 'A*24:AB'
+                    httpStatus: 200
+                    errorMsg: 'null'
+                    validationResult:
+                      valid: false
+                      historicallyValid: true
+                      description: 'The MACD contains a DELETED allele: [A*24:01]'
+                      conditions:
+                        - code: DELETED
+                          imgtHlaRelease: 3.35.0
+                          itemValue: 'A*24:01'
+                  - typing: 'HLA-B*24:AB'
+                    httpStatus: 200
+                    errorMsg: 'null'
+                    validationResult:
+                      valid: false
+                      historicallyValid: false
+                      description: 'The MACD contains INVALID alleles: [HLA-B*24:01, HLA-B*24:02]'
+                      conditions:
+                        - code: INVALID
+                          imgtHlaRelease: 3.35.0
+                          itemValue: 'HLA-B*24:01'
+                        - code: INVALID
+                          imgtHlaRelease: 3.35.0
+                          itemValue: 'HLA-B*24:02'
+                  - typing: 'A*01:XX'
+                    httpStatus: 400
+                    errorMsg: 'Only MAC Designations are supported. [A*01:XX] is not a valid MAC Designation for IMGT HLA Release 3.35.0'
+                    validationResult: null
+                  - typing: 'HLA-A*01:01'
+                    httpStatus: 400
+                    errorMsg: 'Only MAC Designations are supported. [HLA-A*01:01] is not a valid MAC Designation for IMGT HLA Release 3.35.0'
+                    validationResult: null
+                  - typing: 'A*24:BOGUS'
+                    httpStatus: 400
+                    errorMsg: 'Only MAC Designations are supported. [A*24:BOGUS] is not a valid MAC Designation for IMGT HLA Release 3.35.0'
+                    validationResult: null
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidatedTyping'
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: POST_validateList
+      requestBody:
+        content:
+          application/json:
+            example:
+              - 'A*01:AB'
+              - 'C*01:AB'
+              - 'A*24:AB'
+              - 'HLA-B*24:AB'
+              - 'A*01:XX'
+              - 'HLA-A*01:01'
+              - 'A*24:BOGUS'
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      parameters:
+        - name: imgtHlaRelease
+          in: query
+          description: |
+            Optionally specify the IMGT/HLA Release like "3.19.0" (default is the latest release)
+          schema:
+            type: string
+  /expand:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                example:
+                  - transformationReason: 'null'
+                    oldName: 'null'
+                    oldNameStatus: valid
+                    expanded: 'A*01:03:01:02'
+                  - oldName: 'A*01:34N'
+                    oldNameStatus: invalid
+                    expanded: 'A*01:01:38L'
+                    transformationReason: DELRENAME
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlleleResponseItem'
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: 'Invalid allele code: ONE'
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: GET_expand
+      parameters:
+        - name: imgtHlaRelease
+          in: query
+          required: true
+          description: |
+            Optionally specify the IMGT/HLA Release like "3.19.0" (default is the latest release)
+          schema:
+            type: string
+        - name: typing
+          in: query
+          required: true
+          description: 'An allele code designation in the format locus*firstField:alleleCode'
+          schema:
+            type: string
+  /transform:
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                macd: 'HLA-A*01:ABC'
+                transformations:
+                  - transformationReason: DISPLAYEXP
+                    oldName: 'A*01:04'
+                    oldNameStatus: valid
+                    expanded: 'A*01:04N'
+                  - transformationReason: DISPLAYEXP
+                    oldName: 'A*01:11'
+                    oldNameStatus: valid
+                    expanded: 'A*01:11N'
+              schema:
+                $ref: '#/components/schemas/TransformedMacd'
+        '400':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                example: 'Invalid allele code: ONE'
+                type: string
+        '500':
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+      operationId: GET_transform
+      parameters:
+        - name: imgtHlaRelease
+          in: query
+          required: true
+          description: |
+            Optionally specify the IMGT/HLA Release like "3.19.0" (default is the latest release)
+          schema:
+            type: string
+        - name: typing
+          in: query
+          required: true
+          description: 'An allele code designation in the format locus*firstField:alleleCode'
+          schema:
+            type: string
+components:
+  schemas:
+    AlleleResponseItem:
+      properties:
+        oldName:
+          description: 'If a transformation is done, the original value'
+          type: string
+        oldNameStatus:
+          type: string
+        expanded:
+          description: The full allele name used for display.
+          type: string
+        transformationReason:
+          description: |
+            The code for the transformation performed.
+              * DISPLAYEXP - Added, updated, or removed an expression character
+              * DELRENAME - Transformed a deleted or renamed allele
+          type: string
+      required:
+        - oldNameStatus
+        - expanded
+      type: object
+    TransformedMacd:
+      description: 'A transformed multiple allele code designation like "HLA-A*01:AB"'
+      properties:
+        macd:
+          type: string
+        transformations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlleleResponseItem'
+      required:
+        - macd
+        - transformations
+      type: object
+    DecodedTyping:
+      description: 'A decoded typing like "HLA-A*01:AB"'
+      properties:
+        typing:
+          type: string
+        alleleString:
+          type: string
+        httpStatus:
+          type: integer
+        errorMsg:
+          type: string
+      required:
+        - typing
+        - httpStatus
+      type: object
+    AlleleValidationCondition:
+      description: A validation condition for a single allele
+      properties:
+        code:
+          description: |
+            Symbolic code for the condition
+              * DELETE - The original allele was deleted
+              * RENAME - The original allele has been renamed
+              * INVALID - The allele is invalid (never existed)
+              * DEPRECATED - The allele has been deleted/renamed, but is temporarily still valid
+          type: string
+        imgtHlaRelease:
+          description: IMGT HLA Release version for the condition
+          type: string
+        itemValue:
+          description: Allele or value associated with response code
+          type: string
+      required:
+        - code
+        - itemValue
+      type: object
+    ValidationResult:
+      description: The results returned by the /validate endpoint
+      properties:
+        valid:
+          description: Whether the type is currently valid
+          type: boolean
+        historicallyValid:
+          description: Whether the type was historically valid (Delete/Rename)
+          type: boolean
+        description:
+          description: A text description of the validation result
+          type: string
+        conditions:
+          description: A list of conditions determined on individual alleles
+          type: array
+          items:
+            $ref: '#/components/schemas/AlleleValidationCondition'
+      required:
+        - valid
+        - historicallyValid
+        - description
+      type: object
+    ValidatedTyping:
+      description: 'A validated typing like "HLA-A*01:AB"'
+      properties:
+        typing:
+          type: string
+        validationResult:
+          oneOf:
+            - $ref: '#/components/schemas/ValidationResult'
+            - type: object
+        httpStatus:
+          type: integer
+        errorMsg:
+          type: string
+      required:
+        - typing
+        - httpStatus
+      type: object
+  responses: { }
+  parameters: { }
+  examples: { }
+  requestBodies: { }
+  headers: { }
+  securitySchemes: { }
+  links: { }
+  callbacks: { }
