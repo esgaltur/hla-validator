@@ -121,6 +121,7 @@ public class MainController {
         } else {
             lblResult.setTextFill(Color.RED);
             lblResult.setText("InValid");
+            Optional.of((ValidationResult) validationResult).ifPresent(r -> log.info(r.toString()));
         }
 
     }
