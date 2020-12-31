@@ -10,7 +10,7 @@
     </parent>
     <groupId>cz.sosnovich.hlavalidator</groupId>
     <artifactId>hla-validator</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>hla-validator</name>
     <description>HLA/DNA Validator JavaFX and Spring boot Application</description>
 
