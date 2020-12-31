@@ -1,12 +1,16 @@
 # Spring boot application with the using of the JavaFx 11
 
-### Validating the HLA/ DNA and NMDP Codes by using of the Open NMDP API
+### Validating the
 
-### the reason for writing,
+###  * HLA/DNA codes by utins the hla_nom file(IPD-IMGT/HLA Database)
 
-### is to test FxWeaver Platform a.k.k Spring + JavaFx
+###  * NMDP Codes by using of the Open NMDP API
 
-### It's work very good
+### The reason for writing,
+
+### is to test FxWeaver Platform a.k.a Spring + JavaFx
+
+# Package:
 
 #### There is a special command for package the app as a JAR application
 
