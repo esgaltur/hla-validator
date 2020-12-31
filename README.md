@@ -1,10 +1,10 @@
 # Spring boot application with the using of the JavaFx 11
 
-### Validating the
+### Validating:
 
-###  * HLA/DNA codes by utins the hla_nom file(IPD-IMGT/HLA Database)
++ HLA/DNA codes by using the hla_nom.txt file(IPD-IMGT/HLA Database)
 
-###  * NMDP Codes by using of the Open NMDP API
++ NMDP Codes by using of the Open NMDP API
 
 ### The reason for writing,
 
