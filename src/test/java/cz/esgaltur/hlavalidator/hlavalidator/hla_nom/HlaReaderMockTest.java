@@ -116,6 +116,5 @@ class HlaReaderMockTest {
         Assertions.assertEquals(hlaNomRecords.get(2), optionalHlaNomRecords.get().get(2));
         Assertions.assertEquals(hlaNomRecords.get(3), optionalHlaNomRecords.get().get(3));
         Assertions.assertEquals(hlaNomRecords.get(4), optionalHlaNomRecords.get().get(4));
-        Assertions.assertEquals(hlaNomRecords.get(5), optionalHlaNomRecords.get().get(5));
     }
 }

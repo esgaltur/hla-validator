@@ -1,6 +1,6 @@
 package cz.esgaltur.hlavalidator.hlavalidator.hla_nom;
 
-import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.RowPositions;
+import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.RowPositionsHlaNomCsv;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.DNA;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.HLA;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.LocusType;
@@ -27,27 +27,29 @@ import java.util.Date;
 @CommonsLog
 public class HlaNomRecord {
     /**
-     *
+     * Locus from the concrete ENUM HLA/DNA/UNKNOWN
      */
     private Locus<?> locus;
     /**
-     *
+     * value -
+     * Example for the HLA format: 1
+     * Example for the DNA format: 01:01:01:01
      */
     private String value;
     /**
-     *
+     * Date of the Assignment
      */
     private Date dateAssigned;
     /**
-     *
+     * Date of the Deletion
      */
     private Date dateDeleted;
     /**
-     *
+     * Deleted HLA/DNA, reason for the deletion is, identical to
      */
     private String identical;
     /**
-     *
+     * Deletion Reason
      */
     private String reason;
 
@@ -55,45 +57,72 @@ public class HlaNomRecord {
      * @param attributes one line of the hla_nom file
      */
     public HlaNomRecord(String[] attributes) {
-        initValues();
-        Class<?> aClazz = Locus.getType(attributes[RowPositions.LOCUS.ordinal()]);
+        init();
+        setUpValues(attributes);
+
+    }
+
+    /**
+     * Public constructor without params
+     */
+    public HlaNomRecord() {
+        init();
+    }
+
+    /**
+     * @param attributes splitted into the String array row in format
+     *                   <code>LOCUS;Value;DATEASSIGNED;DATEDELETED;IDENTICALTO;REASON</code>
+     * @see RowPositionsHlaNomCsv
+     */
+    public void setUpValues(String[] attributes) {
+        Class<?> aClazz = Locus.getType(attributes[RowPositionsHlaNomCsv.LOCUS.ordinal()]);
         LocusType locusType = aClazz.isAssignableFrom(DNA.class) ? LocusType.DNA : LocusType.HLA;
         if (locusType == LocusType.HLA) {
-            locus = LocusHLA.builder().hla(HLA.valueOf(attributes[RowPositions.LOCUS.ordinal()])).build();
+            locus = LocusHLA.builder().hla(HLA.valueOf(attributes[RowPositionsHlaNomCsv.LOCUS.ordinal()])).build();
         } else {
-            locus = LocusDna.builder().dna(DNA.valueOf(attributes[RowPositions.LOCUS.ordinal()].replace("*", ""))).build();
+            locus = LocusDna.builder().dna(DNA.valueOf(attributes[RowPositionsHlaNomCsv.LOCUS.ordinal()].replace("*", ""))).build();
         }
-        value = attributes[RowPositions.VALUE.ordinal()];
+        value = attributes[RowPositionsHlaNomCsv.VALUE.ordinal()];
         try {
-            dateAssigned = new SimpleDateFormat("yyyyMMdd").parse(attributes[RowPositions.DATE_ASSIGNED.ordinal()]);
+            dateAssigned = new SimpleDateFormat("yyyyMMdd").parse(attributes[RowPositionsHlaNomCsv.DATE_ASSIGNED.ordinal()]);
             if (attributes.length > 3) {
-                dateDeleted = new SimpleDateFormat("yyyyMMdd").parse(attributes[RowPositions.DATE_DELETED.ordinal()]);
-                identical = attributes[RowPositions.IDENTICAL.ordinal()];
-                reason = attributes[RowPositions.REASON.ordinal()];
+                dateDeleted = new SimpleDateFormat("yyyyMMdd").parse(attributes[RowPositionsHlaNomCsv.DATE_DELETED.ordinal()]);
+                identical = attributes[RowPositionsHlaNomCsv.IDENTICAL.ordinal()];
+                reason = attributes[RowPositionsHlaNomCsv.REASON.ordinal()];
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * @return boolean true  in case, that Date of the Deletion is filled up in the line;
      */
     public boolean isDeleted() {
-        return this.getDateDeleted().toInstant().getEpochSecond() > 0;
+        return this.getDateDeleted().toInstant().getEpochSecond() != 0;
     }
 
     /**
      *
      */
-    private void initValues() {
+    private void init() {
         locus = LocusUnknown.builder().build();
         value = "";
         dateAssigned = Date.from(Instant.ofEpochSecond(0));
         dateDeleted = Date.from(Instant.ofEpochSecond(0));
         identical = "";
         reason = "";
+
+    }
+
+    public HlaNomRecord initValues() {
+        locus = LocusUnknown.builder().build();
+        value = "";
+        dateAssigned = Date.from(Instant.ofEpochSecond(0));
+        dateDeleted = Date.from(Instant.ofEpochSecond(0));
+        identical = "";
+        reason = "";
+        return this;
 
     }
 

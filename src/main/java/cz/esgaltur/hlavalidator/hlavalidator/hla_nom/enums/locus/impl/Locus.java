@@ -5,12 +5,14 @@ import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.HLA;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.LocusType;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.UNKNOWN;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
+ * @author Dmitriy Sosnovich
  */
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
 public abstract class Locus<T extends Enum<T>> {
     /**
