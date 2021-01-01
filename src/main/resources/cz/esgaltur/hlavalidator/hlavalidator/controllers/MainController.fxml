@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="554.0" prefWidth="637.0"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="cz.esgaltur.hlavalidator.hlavalidator.controllers.MainController">
+   <children>
+      <JFXProgressBar fx:id="pbProgress" layoutY="545.0" prefHeight="10.0" prefWidth="677.0" progress="0.0"/>
+      <JFXButton fx:id="btnValidate" buttonType="RAISED" layoutX="41.0" layoutY="450.0" prefHeight="58.0"
+                 prefWidth="163.0" style="-fx-border-color: black;" text="Validate"/>
+      <JFXTextField fx:id="txtLocus" layoutX="41.0" layoutY="142.0" prefHeight="58.0" prefWidth="163.0"
+                    promptText="Locus"/>
+      <JFXTextArea fx:id="txtLocusValue" layoutX="31.0" layoutY="243.0" prefHeight="166.0" prefWidth="616.0"
+                   promptText="Value"/>
+      <JFXComboBox fx:id="cmbLocusType" layoutX="41.0" layoutY="60.0" prefHeight="25.0" prefWidth="163.0"
+                   promptText="Locus Type"/>
+      <Label fx:id="lblResult" layoutX="357.0" layoutY="426.0" prefHeight="106.0" prefWidth="290.0"
+             text="Here will be result" textFill="#32d355"/>
+   </children>
+</AnchorPane>

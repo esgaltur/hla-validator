@@ -8,7 +8,7 @@
         <version>2.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>cz.sosnovich.hlavalidator</groupId>
+    <groupId>cz.esgaltur.hlavalidator</groupId>
     <artifactId>hla-validator</artifactId>
     <version>0.0.4-SNAPSHOT</version>
     <name>hla-validator</name>
@@ -178,7 +178,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cz.sosnovich.hlavalidator.hlavalidator.HlaValidatorApplication</mainClass>
+                    <mainClass>cz.esgaltur.hlavalidator.hlavalidator.HlaValidatorApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
