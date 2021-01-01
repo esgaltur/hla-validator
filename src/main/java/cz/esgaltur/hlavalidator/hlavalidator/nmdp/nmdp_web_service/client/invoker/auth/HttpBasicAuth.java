@@ -1,4 +1,4 @@
-package cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker.auth;
+package cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker.auth;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.Base64Utils;

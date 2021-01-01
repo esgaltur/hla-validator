@@ -70,6 +70,19 @@ public class HlaNomRecord {
     }
 
     /**
+     * Initialization method
+     */
+    private void init() {
+        locus = LocusUnknown.builder().build();
+        value = "";
+        dateAssigned = Date.from(Instant.ofEpochSecond(0));
+        dateDeleted = Date.from(Instant.ofEpochSecond(0));
+        identical = "";
+        reason = "";
+
+    }
+
+    /**
      * @param attributes splitted into the String array row in format
      *                   <code>LOCUS;Value;DATEASSIGNED;DATEDELETED;IDENTICALTO;REASON</code>
      * @see RowPositionsHlaNomCsv
@@ -100,30 +113,6 @@ public class HlaNomRecord {
      */
     public boolean isDeleted() {
         return this.getDateDeleted().toInstant().getEpochSecond() != 0;
-    }
-
-    /**
-     *
-     */
-    private void init() {
-        locus = LocusUnknown.builder().build();
-        value = "";
-        dateAssigned = Date.from(Instant.ofEpochSecond(0));
-        dateDeleted = Date.from(Instant.ofEpochSecond(0));
-        identical = "";
-        reason = "";
-
-    }
-
-    public HlaNomRecord initValues() {
-        locus = LocusUnknown.builder().build();
-        value = "";
-        dateAssigned = Date.from(Instant.ofEpochSecond(0));
-        dateDeleted = Date.from(Instant.ofEpochSecond(0));
-        identical = "";
-        reason = "";
-        return this;
-
     }
 
 

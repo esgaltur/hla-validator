@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 
-package cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker;
+package cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 

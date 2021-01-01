@@ -1,7 +1,7 @@
-package cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.api;
+package cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.api;
 
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker.ApiClient;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.model.*;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker.ApiClient;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -48,8 +48,8 @@ public class DefaultApi {
      * @return String
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public String gETCodes(String after, String before) throws RestClientException {
-        return gETCodesWithHttpInfo(after, before).getBody();
+    public String getCodes(String after, String before) throws RestClientException {
+        return getCodesWithHttpInfo(after, before).getBody();
     }
 
     /**
@@ -62,17 +62,17 @@ public class DefaultApi {
      * @return ResponseEntity&lt;String&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<String> gETCodesWithHttpInfo(String after, String before) throws RestClientException {
+    public ResponseEntity<String> getCodesWithHttpInfo(String after, String before) throws RestClientException {
         Object postBody = null;
 
         // verify the required parameter 'after' is set
         if (after == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'after' when calling gETCodes");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'after' when calling getCodes");
         }
 
         // verify the required parameter 'before' is set
         if (before == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'before' when calling gETCodes");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'before' when calling getCodes");
         }
 
         String path = apiClient.expandPath("/codes", Collections.<String, Object>emptyMap());
@@ -109,8 +109,8 @@ public class DefaultApi {
      * @return String
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public String gETCodesCode(String code) throws RestClientException {
-        return gETCodesCodeWithHttpInfo(code).getBody();
+    public String getCodesCode(String code) throws RestClientException {
+        return getCodesCodeWithHttpInfo(code).getBody();
     }
 
     /**
@@ -123,12 +123,12 @@ public class DefaultApi {
      * @return ResponseEntity&lt;String&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<String> gETCodesCodeWithHttpInfo(String code) throws RestClientException {
+    public ResponseEntity<String> getCodesCodeWithHttpInfo(String code) throws RestClientException {
         Object postBody = null;
 
         // verify the required parameter 'code' is set
         if (code == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'code' when calling gETCodesCode");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'code' when calling getCodesCode");
         }
 
         // create path and map variables
@@ -166,8 +166,8 @@ public class DefaultApi {
      * @return String
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public String gETDecode(String imgtHlaRelease, String typing, Boolean expand) throws RestClientException {
-        return gETDecodeWithHttpInfo(imgtHlaRelease, typing, expand).getBody();
+    public String getDecode(String imgtHlaRelease, String typing, Boolean expand) throws RestClientException {
+        return getDecodeWithHttpInfo(imgtHlaRelease, typing, expand).getBody();
     }
 
     /**
@@ -181,22 +181,22 @@ public class DefaultApi {
      * @return ResponseEntity&lt;String&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<String> gETDecodeWithHttpInfo(String imgtHlaRelease, String typing, Boolean expand) throws RestClientException {
+    public ResponseEntity<String> getDecodeWithHttpInfo(String imgtHlaRelease, String typing, Boolean expand) throws RestClientException {
         Object postBody = null;
 
         // verify the required parameter 'imgtHlaRelease' is set
         if (imgtHlaRelease == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling gETDecode");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling getDecode");
         }
 
         // verify the required parameter 'typing' is set
         if (typing == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling gETDecode");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling getDecode");
         }
 
         // verify the required parameter 'expand' is set
         if (expand == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'expand' when calling gETDecode");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'expand' when calling getDecode");
         }
 
         String path = apiClient.expandPath("/decode", Collections.<String, Object>emptyMap());
@@ -234,8 +234,8 @@ public class DefaultApi {
      * @return List&lt;AlleleResponseItem&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public List<AlleleResponseItem> gETExpand(String imgtHlaRelease, String typing) throws RestClientException {
-        return gETExpandWithHttpInfo(imgtHlaRelease, typing).getBody();
+    public List<AlleleResponseItem> getExpand(String imgtHlaRelease, String typing) throws RestClientException {
+        return getExpandWithHttpInfo(imgtHlaRelease, typing).getBody();
     }
 
     /**
@@ -248,17 +248,17 @@ public class DefaultApi {
      * @return ResponseEntity&lt;List&lt;AlleleResponseItem&gt;&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<List<AlleleResponseItem>> gETExpandWithHttpInfo(String imgtHlaRelease, String typing) throws RestClientException {
+    public ResponseEntity<List<AlleleResponseItem>> getExpandWithHttpInfo(String imgtHlaRelease, String typing) throws RestClientException {
         Object postBody = null;
 
         // verify the required parameter 'imgtHlaRelease' is set
         if (imgtHlaRelease == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling gETExpand");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling getExpand");
         }
 
         // verify the required parameter 'typing' is set
         if (typing == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling gETExpand");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling getExpand");
         }
 
         String path = apiClient.expandPath("/expand", Collections.<String, Object>emptyMap());
@@ -293,8 +293,8 @@ public class DefaultApi {
      * @return String
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public String gETImgtHlaReleases() throws RestClientException {
-        return gETImgtHlaReleasesWithHttpInfo().getBody();
+    public String getImgtHlaReleases() throws RestClientException {
+        return getImgtHlaReleasesWithHttpInfo().getBody();
     }
 
     /**
@@ -305,7 +305,7 @@ public class DefaultApi {
      * @return ResponseEntity&lt;String&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<String> gETImgtHlaReleasesWithHttpInfo() throws RestClientException {
+    public ResponseEntity<String> getImgtHlaReleasesWithHttpInfo() throws RestClientException {
         Object postBody = null;
 
         String path = apiClient.expandPath("/imgtHlaReleases", Collections.<String, Object>emptyMap());
@@ -339,8 +339,8 @@ public class DefaultApi {
      * @return TransformedMacd
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public TransformedMacd gETTransform(String imgtHlaRelease, String typing) throws RestClientException {
-        return gETTransformWithHttpInfo(imgtHlaRelease, typing).getBody();
+    public TransformedMacd getTransform(String imgtHlaRelease, String typing) throws RestClientException {
+        return getTransformWithHttpInfo(imgtHlaRelease, typing).getBody();
     }
 
     /**
@@ -353,17 +353,17 @@ public class DefaultApi {
      * @return ResponseEntity&lt;TransformedMacd&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<TransformedMacd> gETTransformWithHttpInfo(String imgtHlaRelease, String typing) throws RestClientException {
+    public ResponseEntity<TransformedMacd> getTransformWithHttpInfo(String imgtHlaRelease, String typing) throws RestClientException {
         Object postBody = null;
 
         // verify the required parameter 'imgtHlaRelease' is set
         if (imgtHlaRelease == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling gETTransform");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling getTransform");
         }
 
         // verify the required parameter 'typing' is set
         if (typing == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling gETTransform");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling getTransform");
         }
 
         String path = apiClient.expandPath("/transform", Collections.<String, Object>emptyMap());
@@ -400,8 +400,8 @@ public class DefaultApi {
      * @return ValidationResult
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ValidationResult gETValidate(String imgtHlaRelease, String typing) throws RestClientException {
-        return gETValidateWithHttpInfo(imgtHlaRelease, typing).getBody();
+    public ValidationResult getValidate(String imgtHlaRelease, String typing) throws RestClientException {
+        return getValidateWithHttpInfo(imgtHlaRelease, typing).getBody();
     }
 
     /**
@@ -414,17 +414,17 @@ public class DefaultApi {
      * @return ResponseEntity&lt;ValidationResult&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<ValidationResult> gETValidateWithHttpInfo(String imgtHlaRelease, String typing) throws RestClientException {
+    public ResponseEntity<ValidationResult> getValidateWithHttpInfo(String imgtHlaRelease, String typing) throws RestClientException {
         Object postBody = null;
 
         // verify the required parameter 'imgtHlaRelease' is set
         if (imgtHlaRelease == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling gETValidate");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'imgtHlaRelease' when calling getValidate");
         }
 
         // verify the required parameter 'typing' is set
         if (typing == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling gETValidate");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'typing' when calling getValidate");
         }
 
         String path = apiClient.expandPath("/validate", Collections.<String, Object>emptyMap());

@@ -11,7 +11,7 @@
  */
 
 
-package cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.model;
+package cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

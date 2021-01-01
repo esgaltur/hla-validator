@@ -2,12 +2,13 @@ package cz.esgaltur.hlavalidator.hlavalidator.controllers;
 
 
 import com.jfoenix.controls.*;
+import cz.esgaltur.hlavalidator.hlavalidator.components.validators.LocusNMDPTextValidator;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.HlaNomReader;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.HlaNomRecord;
 import cz.esgaltur.hlavalidator.hlavalidator.hla_nom.enums.locus.LocusType;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.api.DefaultApi;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.model.ValidatedTypingValidationResultOneOf;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.model.ValidationResult;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.api.DefaultApi;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.model.ValidatedTypingValidationResultOneOf;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.model.ValidationResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,12 +17,11 @@ import javafx.scene.paint.Color;
 import lombok.extern.apachecommons.CommonsLog;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,14 +47,16 @@ public class MainController {
     @FXML
     public Label lblResult;
 
+    private static final String LINE = "-------";
+    private static final String OUT = "------->OUT";
+
     /**
      * @param hlaNomReader Bean for the reading of the hla_nom file
-     * @param defaultApi   Generated API for calling the NMDP API for validation of the NMDP code
      */
     @Autowired
-    public MainController(HlaNomReader hlaNomReader, DefaultApi defaultApi) {
+    public MainController(HlaNomReader hlaNomReader) {
         this.hlaNomReader = hlaNomReader;
-        this.defaultApi = defaultApi;
+        this.defaultApi = new DefaultApi();
         hlaNomRecords = new ArrayList<>();
     }
 
@@ -75,7 +77,16 @@ public class MainController {
                 LocusType.DNA, LocusType.NMDP_CODE);
         cmbLocusType.setItems(locusTypes);
 
+        cmbLocusType.valueProperty().addListener((observableValue, locusType, t1) -> {
+            if (observableValue.getValue().ordinal() == LocusType.NMDP_CODE.ordinal()) {
+                LocusNMDPTextValidator locusNMDPTextValidator = new LocusNMDPTextValidator("Invalid NMDP locus name");
+                txtLocus.setValidators(locusNMDPTextValidator);
+            } else {
+                txtLocus.resetValidation();
+                txtLocus.getValidators().clear();
+            }
 
+        });
         new Thread(() -> btnValidate.setOnAction(actionEvent -> isHlaDnaValid())).start();
     }
 
@@ -83,13 +94,18 @@ public class MainController {
      *
      */
     private void isHlaDnaValid() {
+        if (!txtLocus.validate()) {
+            return;
+        }
+        log.info("<------- IN");
         log.info(cmbLocusType.getValue().name());
         log.info(txtLocus.getText());
         log.info(txtLocusValue.getText());
+        log.info(LINE);
+
         Optional<HlaNomRecord> record = Optional.empty();
         ValidatedTypingValidationResultOneOf validationResult = new ValidationResult();
         switch (cmbLocusType.getValue()) {
-
             case UNKNOWN:
                 record = Optional.empty();
                 break;
@@ -118,12 +134,24 @@ public class MainController {
 
             lblResult.setTextFill(Color.GREEN);
             lblResult.setText("Valid");
-            record.ifPresent(hlaNomRecord -> log.info(hlaNomRecord.toString()));
-            Optional.of((ValidationResult) validationResult).ifPresent(r -> log.info(r.toString()));
+            record.ifPresent(hlaNomRecord -> {
+                log.info(OUT);
+                log.info(hlaNomRecord.toString());
+                log.info(LINE);
+            });
+            Optional.of((ValidationResult) validationResult).ifPresent(r -> {
+                log.info(OUT);
+                log.info(r.toString());
+                log.info(LINE);
+            });
         } else {
             lblResult.setTextFill(Color.RED);
-            lblResult.setText("InValid");
-            Optional.of((ValidationResult) validationResult).ifPresent(r -> log.info(r.toString()));
+            lblResult.setText("Invalid");
+            Optional.of((ValidationResult) validationResult).ifPresent(r -> {
+                log.info(OUT);
+                log.info(r.toString());
+                log.info(LINE);
+            });
         }
 
     }
@@ -132,9 +160,21 @@ public class MainController {
      * @return ValidatedTypingValidationResultOneOf
      */
     private ValidatedTypingValidationResultOneOf validateByNMDP() {
-        ValidatedTypingValidationResultOneOf validationResult;
-        String imgtVersion = defaultApi.gETImgtHlaReleases().split("\n")[0].split(" ")[0];
-        validationResult = defaultApi.gETValidate(imgtVersion, txtLocus.getText().concat(txtLocusValue.getText()));
-        return validationResult;
+        ValidationResult validationResult = new ValidationResult();
+        String imgtVersion = defaultApi.getImgtHlaReleases().split("\n")[0].split(" ")[0];
+        try {
+            validationResult = defaultApi.getValidate(imgtVersion, txtLocus.getText().concat(txtLocusValue.getText()));
+            return validationResult;
+        } catch (HttpClientErrorException e) {
+            if (e.getRawStatusCode() == HttpStatus.BAD_REQUEST.value()) {
+                log.error("Bad Request", e);
+                validationResult.setValid(false);
+                validationResult.setHistoricallyValid(false);
+                validationResult.setDescription(e.getResponseBodyAsString());
+                validationResult.setConditions(Collections.emptyList());
+            }
+            return validationResult;
+        }
+
     }
 }

@@ -1,11 +1,11 @@
-package cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker;
+package cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.threetenbp.ThreeTenModule;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker.auth.ApiKeyAuth;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker.auth.Authentication;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker.auth.HttpBasicAuth;
-import cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker.auth.HttpBearerAuth;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker.auth.ApiKeyAuth;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker.auth.Authentication;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker.auth.HttpBasicAuth;
+import cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker.auth.HttpBearerAuth;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openapitools.jackson.nullable.JsonNullableModule;

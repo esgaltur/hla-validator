@@ -1,4 +1,4 @@
-package cz.esgaltur.hlavalidator.hlavalidator.nmdp_web_service.client.invoker;
+package cz.esgaltur.hlavalidator.hlavalidator.nmdp.nmdp_web_service.client.invoker;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;
