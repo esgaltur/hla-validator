@@ -1,0 +1,6 @@
+# file: hla_nom.txt example with one line
+# date: 2016-04-15
+# version: IPD-IMGT/HLA 3.24.0
+# origin: http://hla.alleles.org/wmda/hla_nom.txt
+# author: WHO, Steven G. E. Marsh (steven.marsh@ucl.ac.uk)
+A;1;19680101;;;

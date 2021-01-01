@@ -36,7 +36,9 @@ class HlaReaderSpyTest {
     HlaNomReader hlaReaderTest;
     ProgressBar progressBar;
 
-
+    /**
+     *
+     */
     @BeforeAll
     public static void initToolkit() {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -54,6 +56,9 @@ class HlaReaderSpyTest {
         Platform.exit();
     }
 
+    /**
+     * @throws IOException
+     */
     @BeforeEach
     public void before() throws IOException {
         progressBar = new ProgressBar();
